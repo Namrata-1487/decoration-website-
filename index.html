@@ -1,0 +1,371 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Event management</title>
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous" />
+
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" />
+
+    <!-- Font Awesome (needed for .fas icons in the carousel) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <!-- Your styles -->
+    <link rel="stylesheet" href="style.css" />
+  </head>
+
+  <body class="container-fluid p-0">
+    <!-- Scroll progress -->
+    <div class="scroll-progress" id="scrollProgress"></div>
+
+    <!-- NAVBAR -->
+    <nav id="mainNav" class="navbar navbar-expand-lg navbar-creative sticky-top">
+      <div class="container">
+        <!-- Brand with animated logo reveal -->
+        <a class="brand-mark navbar-brand d-flex align-items-center gap-2 text-decoration-none m-0" href="#home" aria-label="Home">
+          <!-- Inline SVG Logo with morph -->
+          <svg class="logo-svg" width="34" height="34" viewBox="0 0 64 64" aria-hidden="true">
+            <defs>
+              <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0%" stop-color="#C5A572"></stop>
+                <stop offset="100%" stop-color="#E8D3A1"></stop>
+              </linearGradient>
+              <filter id="glow">
+                <feGaussianBlur stdDeviation="2" result="b"></feGaussianBlur>
+                <feMerge>
+                  <feMergeNode in="b"></feMergeNode>
+                  <feMergeNode in="SourceGraphic"></feMergeNode>
+                </feMerge>
+              </filter>
+            </defs>
+
+            <!-- Stroke path for draw + morph -->
+            <path class="logo-stroke" d="M10 42 L18 20 L32 34 L46 20 L54 42 Z" fill="none" stroke="#C5A572" stroke-width="2" stroke-linejoin="round">
+              <animate
+                attributeName="d"
+                dur="6s"
+                repeatCount="indefinite"
+                values="M10 42 L18 20 L32 34 L46 20 L54 42 Z;
+                        M10 42 L20 22 L32 30 L44 22 L54 42 Z;
+                        M10 42 L18 20 L32 34 L46 20 L54 42 Z"
+              />
+            </path>
+
+            <!-- Fill (revealed after stroke) + morph -->
+            <path class="logo-fill" d="M10 42 L18 20 L32 34 L46 20 L54 42 Z" fill="url(#g)" opacity="0">
+              <animate
+                attributeName="d"
+                dur="6s"
+                repeatCount="indefinite"
+                values="M10 42 L18 20 L32 34 L46 20 L54 42 Z;
+                        M10 42 L20 22 L32 30 L44 22 L54 42 Z;
+                        M10 42 L18 20 L32 34 L46 20 L54 42 Z"
+              />
+            </path>
+
+            <rect class="logo-base" x="14" y="44" width="36" height="8" rx="4" fill="#F7E7CE" opacity="0"></rect>
+          </svg>
+          <span class="brand-name">Decor Studio</span>
+        </a>
+
+        <!-- Toggler (custom) -->
+        <button class="navbar-toggler ms-auto" type="button" data-bs-toggle="collapse" data-bs-target="#navContent" aria-controls="navContent" aria-expanded="false" aria-label="Toggle navigation"><span class="bar"></span><span class="bar"></span><span class="bar"></span></button>
+
+        <!-- Collapsible menu -->
+        <div class="collapse navbar-collapse" id="navContent">
+          <ul class="navbar-nav ms-auto align-items-lg-center gap-lg-2">
+            <li class="nav-item"><a class="nav-link creative magnet" href="#home">Home</a></li>
+            <li class="nav-item"><a class="nav-link creative magnet" href="#services">Services</a></li>
+            <li class="nav-item"><a class="nav-link creative magnet" href="#portfolio">Portfolio</a></li>
+            <li class="nav-item"><a class="nav-link creative magnet" href="#testimonials">Testimonials</a></li>
+            <li class="nav-item ms-lg-2">
+              <a class="btn btn-pill neon" href="#contact">Book Now</a>
+            </li>
+          </ul>
+        </div>
+
+        <!-- Edge glow line -->
+        <div class="navbar-edge"></div>
+        <!-- Backdrop for mobile -->
+        <div class="nav-backdrop"></div>
+      </div>
+    </nav>
+
+    <!-- HOME / HERO -->
+    <header id="home" class="py-5 py-lg-6 bg-white">
+      <div class="container">
+        <div class="row align-items-center g-4">
+          <!-- Parallax scene (decorative) -->
+          <div class="parallax" aria-hidden="true">
+            <div class="layer l1" data-speed="0.08"></div>
+            <div class="layer l2" data-speed="0.16"></div>
+            <div class="layer l3" data-speed="0.24"></div>
+          </div>
+
+          <!-- Liquid blobs -->
+          <div class="blobs" aria-hidden="true">
+            <span class="blob b1"></span>
+            <span class="blob b2"></span>
+            <span class="blob b3"></span>
+          </div>
+
+          <div class="col-12 col-lg-7">
+            <h1 class="display-5 fw-bold mb-3 reveal">Make Your Event Memorable</h1>
+            <p class="lead mb-4 reveal">Elegant, modern, and personalized decorations for every occasion.</p>
+            <div class="d-flex gap-2 flex-wrap reveal">
+              <a href="#portfolio" class="btn btn-pill">Explore Work</a>
+              <a href="#contact" class="btn btn-outline-dark btn-pill fw-bold px-4"> <i class="bi bi-telephone me-1"></i> Contact </a>
+            </div>
+          </div>
+          <div class="col-12 col-lg-5 text-center">
+            <div class="ratio ratio-1x1 rounded-circle bg-light border floating mx-auto" style="max-width: 320px"></div>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- SERVICES -->
+    <section id="services" class="py-5">
+      <div class="container">
+        <div class="row justify-content-center text-center mb-4">
+          <div class="col-12 col-lg-8">
+            <h2 class="mb-3 reveal">Services</h2>
+            <p class="mb-0 reveal">Birthday decoration, kids’ party decor, newborn welcome, baby shower, haldi decoration, and more.</p>
+          </div>
+        </div>
+        <div class="row g-3 g-md-4">
+          <div class="col-6 col-md-4">
+            <div class="card h-100 shadow-sm border-0 reveal">
+              <div class="card-body">
+                <h5 class="card-title fw-bold">Birthdays</h5>
+                <p class="card-text">Themes & custom backdrops.</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-6 col-md-4">
+            <div class="card h-100 shadow-sm border-0 reveal">
+              <div class="card-body">
+                <h5 class="card-title fw-bold">Baby Shower</h5>
+                <p class="card-text">Pastel palettes & props.</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-6 col-md-4">
+            <div class="card h-100 shadow-sm border-0 reveal">
+              <div class="card-body">
+                <h5 class="card-title fw-bold">Haldi</h5>
+                <p class="card-text">Floral decor & seating.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- MARQUEE -->
+    <div class="container">
+      <div class="marquee" aria-hidden="true">
+        <div class="track"><span>Weddings</span><span>Birthdays</span><span>Baby Shower</span><span>Haldi</span> <span>Corporate Events</span><span>Theme Backdrops</span><span>Custom Props</span> <span>Weddings</span><span>Birthdays</span><span>Baby Shower</span><span>Haldi</span> <span>Corporate Events</span><span>Theme Backdrops</span><span>Custom Props</span></div>
+      </div>
+    </div>
+
+    <div class="section-divider"></div>
+
+    <!-- PORTFOLIO (interactive cards / “carousel”) -->
+    <section id="portfolio" class="py-5">
+      <div class="container">
+        <div class="row justify-content-center mb-4">
+          <div class="col-12 col-lg-8 text-center">
+            <h2 class="mb-3 reveal">Portfolio</h2>
+            <p class="mb-0 reveal">Tap a card to expand.</p>
+          </div>
+        </div>
+
+        <div class="options mx-auto">
+          <div class="option active" style="--optionBackground: url(https://66.media.tumblr.com/6fb397d822f4f9f4596dff2085b18f2e/tumblr_nzsvb4p6xS1qho82wo1_1280.jpg)">
+            <div class="shadow"></div>
+            <div class="label">
+              <div class="icon"><i class="fas fa-walking"></i></div>
+              <div class="info">
+                <div class="main">Blonkisoaz</div>
+                <div class="sub">Omuke trughte a otufta</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="option" style="--optionBackground: url(https://66.media.tumblr.com/8b69cdde47aa952e4176b4200052abf4/tumblr_o51p7mFFF21qho82wo1_1280.jpg)">
+            <div class="shadow"></div>
+            <div class="label">
+              <div class="icon"><i class="fas fa-snowflake"></i></div>
+              <div class="info">
+                <div class="main">Oretemauw</div>
+                <div class="sub">Omuke trughte a otufta</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="option" style="--optionBackground: url(https://66.media.tumblr.com/5af3f8303456e376ceda1517553ba786/tumblr_o4986gakjh1qho82wo1_1280.jpg)">
+            <div class="shadow"></div>
+            <div class="label">
+              <div class="icon"><i class="fas fa-tree"></i></div>
+              <div class="info">
+                <div class="main">Iteresuselle</div>
+                <div class="sub">Omuke trughte a otufta</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="option" style="--optionBackground: url(https://66.media.tumblr.com/5516a22e0cdacaa85311ec3f8fd1e9ef/tumblr_o45jwvdsL11qho82wo1_1280.jpg)">
+            <div class="shadow"></div>
+            <div class="label">
+              <div class="icon"><i class="fas fa-tint"></i></div>
+              <div class="info">
+                <div class="main">Idiefe</div>
+                <div class="sub">Omuke trughte a otufta</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="option" style="--optionBackground: url(https://66.media.tumblr.com/f19901f50b79604839ca761cd6d74748/tumblr_o65rohhkQL1qho82wo1_1280.jpg)">
+            <div class="shadow"></div>
+            <div class="label">
+              <div class="icon"><i class="fas fa-sun"></i></div>
+              <div class="info">
+                <div class="main">Inatethi</div>
+                <div class="sub">Omuke trughte a otufta</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- /options -->
+      </div>
+    </section>
+
+    <div class="section-divider"></div>
+
+    <!-- TESTIMONIALS -->
+    <section id="testimonials" class="py-5 bg-light">
+      <div class="container">
+        <div class="row justify-content-center text-center">
+          <div class="col-12 col-lg-8">
+            <h2 class="mb-3 reveal">Testimonials</h2>
+            <p class="mb-0 reveal">Clients love our attention to detail and smooth execution.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="section-divider"></div>
+
+    <!-- CONTACT (Glass‑morphism) -->
+    <section id="contact" class="py-5 position-relative contact-section">
+      <!-- Decorative glass blobs (scoped to contact) -->
+      <div class="contact-bg" aria-hidden="true">
+        <span class="blob b1"></span>
+        <span class="blob b2"></span>
+        <span class="blob b3"></span>
+      </div>
+
+      <div class="container">
+        <header class="text-center mb-5 reveal">
+          <h2 class="display-6 fw-bold text-navy">Let’s Plan Your Perfect Event</h2>
+          <p class="lead text-muted mb-0">Tell us about your occasion—theme, date, venue—and we’ll craft a beautiful experience.</p>
+        </header>
+
+        <!-- Glass contact card -->
+        <section class="contact-card glass tilt mx-auto reveal" style="max-width: 1080px">
+          <div class="row g-0 align-items-stretch">
+            <!-- Form -->
+            <div class="col-12 col-lg-6 p-4 p-md-5 border-end-lg">
+              <h3 class="h4 fw-bold mb-4 text-navy d-flex align-items-center gap-2"><i class="bi bi-envelope-paper-heart text-gold"></i> Send us a message</h3>
+
+              <form id="contactForm" novalidate>
+                <div class="mb-3">
+                  <label class="form-label" for="name">Name</label>
+                  <input class="form-control form-glass" id="name" name="name" type="text" placeholder="Your full name" required />
+                  <div class="invalid-feedback">Please enter your name.</div>
+                </div>
+
+                <div class="mb-3">
+                  <label class="form-label" for="email">Email</label>
+                  <input class="form-control form-glass" id="email" name="email" type="email" placeholder="you@example.com" required />
+                  <div class="invalid-feedback">Please enter a valid email.</div>
+                </div>
+
+                <div class="row">
+                  <div class="col-12 col-md-6 mb-3">
+                    <label class="form-label" for="phone">Phone (required)</label>
+                    <input class="form-control form-glass" id="phone" name="phone" type="tel" placeholder="+91 xxxxxxxx" required />
+                  </div>
+                  <div class="col-12 col-md-6 mb-3">
+                    <label class="form-label" for="eventType">Event type</label>
+                    <select class="form-select form-glass" id="eventType" name="eventType" required>
+                      <option value="" selected disabled>Choose…</option>
+                      <option>Birthday</option>
+                      <option>Kids Party</option>
+                      <option>Newborn Welcome</option>
+                      <option>Baby Shower</option>
+                      <option>Haldi Ceremony</option>
+
+                      <option>Other</option>
+                    </select>
+                    <div class="invalid-feedback">Please select an event type.</div>
+                  </div>
+                </div>
+
+                <div class="mb-3">
+                  <label class="form-label" for="message">Tell us more</label>
+                  <textarea class="form-control form-glass" id="message" name="message" rows="4" placeholder="Theme, date, venue, guest count, colors, budget..."></textarea>
+                </div>
+
+                <div class="d-grid gap-2">
+                  <button class="btn btn-pill ripple" type="submit"><i class="bi bi-send me-1"></i> Send Enquiry</button>
+                </div>
+              </form>
+            </div>
+
+            <!-- Info panel -->
+            <div class="col-12 col-lg-6 p-4 p-md-5">
+              <h3 class="h4 fw-bold mb-4 text-navy d-flex align-items-center gap-2"><i class="bi bi-geo-alt text-gold"></i> Contact details</h3>
+
+              <ul class="list-unstyled mb-4 small text-muted">
+                <li class="mb-2"><i class="bi bi-telephone text-gold me-2"></i> +91‑98xxxxxxx</li>
+                <li class="mb-2"><i class="bi bi-whatsapp text-gold me-2"></i> WhatsApp available</li>
+                <li class="mb-2"><i class="bi bi-envelope text-gold me-2"></i> hello@decorstudio.example</li>
+                <li class="mb-2"><i class="bi bi-clock text-gold me-2"></i> Mon–Sat, 10:00–19:00 IST</li>
+              </ul>
+
+              <div class="info-card glass-sm p-3 p-md-4 mb-3">
+                <h4 class="h6 fw-bold text-navy mb-2"><i class="bi bi-stars text-gold me-2"></i> Why choose us?</h4>
+                <ul class="small text-muted ps-3 mb-0">
+                  <li>Luxury glass-aesthetic moodboards</li>
+                  <li>End-to-end decoration & coordination</li>
+                  <li>On-brand palettes and theme props</li>
+                </ul>
+              </div>
+
+              <!-- Map / image placeholder -->
+              <div class="map glass-sm ratio ratio-16x9 overflow-hidden">
+                <!-- Replace with your map iframe when ready -->
+                <img src="https://images.unsplash.com/photo-1526778548025-fa2f459cd5c1?q=80&w=1400&auto=format&fit=crop" alt="Decor moodboard" class="w-100 h-100 object-fit-cover" />
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+
+      <!-- Success toast -->
+      <div id="contactToast" class="toast-glass" role="status" aria-live="polite" aria-atomic="true"><i class="bi bi-check2-circle me-2"></i> Message sent! We’ll get back to you shortly.</div>
+    </section>
+
+    <!-- Bootstrap Bundle JS (with Popper) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+
+    <!-- Your JS -->
+    <script src="index.js"></script>
+  </body>
+</html>
