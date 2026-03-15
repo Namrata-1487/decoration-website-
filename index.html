@@ -11,23 +11,25 @@
     <!-- Bootstrap Icons -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" />
 
-    <!-- Font Awesome (needed for .fas icons in the carousel) -->
+    <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
     <!-- Your styles -->
     <link rel="stylesheet" href="style.css" />
   </head>
 
-  <body class="container-fluid p-0">
+  <!-- Use container-fluid as you had, no change -->
+  <body class="container-fluid p-0 page-fade-in">
     <!-- Scroll progress -->
     <div class="scroll-progress" id="scrollProgress"></div>
 
     <!-- NAVBAR -->
+    <!-- NOTE: navbar-expand-lg collapses below lg (≤991.98px) -->
     <nav id="mainNav" class="navbar navbar-expand-lg navbar-creative sticky-top">
-      <div class="container">
+      <div class="container position-relative">
         <!-- Brand with animated logo reveal -->
         <a class="brand-mark navbar-brand d-flex align-items-center gap-2 text-decoration-none m-0" href="#home" aria-label="Home">
-          <!-- Inline SVG Logo with morph -->
+          <!-- Inline SVG Logo -->
           <svg class="logo-svg" width="34" height="34" viewBox="0 0 64 64" aria-hidden="true">
             <defs>
               <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
@@ -43,7 +45,6 @@
               </filter>
             </defs>
 
-            <!-- Stroke path for draw + morph -->
             <path class="logo-stroke" d="M10 42 L18 20 L32 34 L46 20 L54 42 Z" fill="none" stroke="#C5A572" stroke-width="2" stroke-linejoin="round">
               <animate
                 attributeName="d"
@@ -55,7 +56,6 @@
               />
             </path>
 
-            <!-- Fill (revealed after stroke) + morph -->
             <path class="logo-fill" d="M10 42 L18 20 L32 34 L46 20 L54 42 Z" fill="url(#g)" opacity="0">
               <animate
                 attributeName="d"
@@ -72,7 +72,7 @@
           <span class="brand-name">Decor Studio</span>
         </a>
 
-        <!-- Toggler (custom) -->
+        <!-- Toggler (Bootstrap collapse) -->
         <button class="navbar-toggler ms-auto" type="button" data-bs-toggle="collapse" data-bs-target="#navContent" aria-controls="navContent" aria-expanded="false" aria-label="Toggle navigation"><span class="bar"></span><span class="bar"></span><span class="bar"></span></button>
 
         <!-- Collapsible menu -->
@@ -88,10 +88,12 @@
           </ul>
         </div>
 
-        <!-- Edge glow line -->
+        <!-- Edge glow line (always visible) -->
         <div class="navbar-edge"></div>
-        <!-- Backdrop for mobile -->
-        <div class="nav-backdrop"></div>
+
+        <!-- Backdrop (only used on mobile) -->
+        <!-- d-lg-none means visible only below lg when we add .show via JS -->
+        <div class="nav-backdrop d-lg-none"></div>
       </div>
     </nav>
 
@@ -128,7 +130,7 @@
       </div>
     </header>
 
-    <!-- SERVICES -->
+    <!-- SERVICES (Looping multi-card carousel) -->
     <section id="services" class="py-5">
       <div class="container">
         <div class="row justify-content-center text-center mb-4">
@@ -137,35 +139,91 @@
             <p class="mb-0 reveal">Birthday decoration, kids’ party decor, newborn welcome, baby shower, haldi decoration, and more.</p>
           </div>
         </div>
-        <div class="row g-3 g-md-4">
-          <div class="col-6 col-md-4">
-            <div class="card h-100 shadow-sm border-0 reveal">
-              <div class="card-body">
-                <h5 class="card-title fw-bold">Birthdays</h5>
-                <p class="card-text">Themes & custom backdrops.</p>
+
+        <!-- Bootstrap Carousel -->
+        <div id="servicesCarousel" class="carousel slide" data-bs-ride="carousel" data-bs-interval="3500" data-bs-wrap="true" data-bs-pause="hover" aria-label="Services carousel">
+          <!-- Indicators -->
+          <div class="carousel-indicators">
+            <button type="button" data-bs-target="#servicesCarousel" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+            <button type="button" data-bs-target="#servicesCarousel" data-bs-slide-to="1" aria-label="Slide 2"></button>
+          </div>
+
+          <div class="carousel-inner">
+            <!-- ===== Slide 1 ===== -->
+            <div class="carousel-item active">
+              <div class="row g-3 g-md-4">
+                <div class="col-12 col-md-6 col-lg-4">
+                  <div class="card h-100 shadow-sm border-0 reveal">
+                    <div class="card-body">
+                      <h5 class="card-title fw-bold">Birthdays</h5>
+                      <p class="card-text">Themes &amp; custom backdrops.</p>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col-12 col-md-6 col-lg-4">
+                  <div class="card h-100 shadow-sm border-0 reveal">
+                    <div class="card-body">
+                      <h5 class="card-title fw-bold">Baby Shower</h5>
+                      <p class="card-text">Pastel palettes &amp; props.</p>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col-12 col-md-6 col-lg-4">
+                  <div class="card h-100 shadow-sm border-0 reveal">
+                    <div class="card-body">
+                      <h5 class="card-title fw-bold">HouseWarming</h5>
+                      <p class="card-text">Grihpravesh, Kalawa, Diya and rangoli</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- ===== Slide 2 ===== -->
+            <div class="carousel-item">
+              <div class="row g-3 g-md-4">
+                <div class="col-12 col-md-6 col-lg-4">
+                  <div class="card h-100 shadow-sm border-0 reveal">
+                    <div class="card-body">
+                      <h5 class="card-title fw-bold">Theme parties</h5>
+                      <p class="card-text">Bollywood, vintage, bollywood</p>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col-12 col-md-6 col-lg-4">
+                  <div class="card h-100 shadow-sm border-0 reveal">
+                    <div class="card-body">
+                      <h5 class="card-title fw-bold">Surprise Parties</h5>
+                      <p class="card-text">Hidden decor, Midnight cake cut</p>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col-12 col-md-6 col-lg-4">
+                  <div class="card h-100 shadow-sm border-0 reveal">
+                    <div class="card-body">
+                      <h5 class="card-title fw-bold">Haldi Events</h5>
+                      <p class="card-text">Floral decor</p>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
-          <div class="col-6 col-md-4">
-            <div class="card h-100 shadow-sm border-0 reveal">
-              <div class="card-body">
-                <h5 class="card-title fw-bold">Baby Shower</h5>
-                <p class="card-text">Pastel palettes & props.</p>
-              </div>
-            </div>
-          </div>
-          <div class="col-6 col-md-4">
-            <div class="card h-100 shadow-sm border-0 reveal">
-              <div class="card-body">
-                <h5 class="card-title fw-bold">Haldi</h5>
-                <p class="card-text">Floral decor & seating.</p>
-              </div>
-            </div>
-          </div>
+
+          <!-- Controls -->
+          <button class="carousel-control-prev" type="button" data-bs-target="#servicesCarousel" data-bs-slide="prev" aria-label="Previous">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+          </button>
+          <button class="carousel-control-next" type="button" data-bs-target="#servicesCarousel" data-bs-slide="next" aria-label="Next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+          </button>
         </div>
       </div>
     </section>
-
     <!-- MARQUEE -->
     <div class="container">
       <div class="marquee" aria-hidden="true">
@@ -175,7 +233,7 @@
 
     <div class="section-divider"></div>
 
-    <!-- PORTFOLIO (interactive cards / “carousel”) -->
+    <!-- PORTFOLIO (“carousel” style cards) -->
     <section id="portfolio" class="py-5">
       <div class="container">
         <div class="row justify-content-center mb-4">
@@ -248,13 +306,267 @@
     <div class="section-divider"></div>
 
     <!-- TESTIMONIALS -->
+    <!-- ===================== -->
+    <!-- TESTIMONIALS CAROUSEL -->
+    <!-- ===================== -->
     <section id="testimonials" class="py-5 bg-light">
       <div class="container">
-        <div class="row justify-content-center text-center">
+        <div class="row justify-content-center text-center mb-4">
           <div class="col-12 col-lg-8">
-            <h2 class="mb-3 reveal">Testimonials</h2>
-            <p class="mb-0 reveal">Clients love our attention to detail and smooth execution.</p>
+            <h2 class="mb-2 reveal">What Clients Say</h2>
+            <p class="text-muted mb-0 reveal">Real experiences from events we’ve decorated recently.</p>
           </div>
+        </div>
+
+        <div id="testimonialCarousel" class="carousel slide" data-bs-ride="carousel" aria-label="Client testimonials">
+          <!-- Indicators -->
+          <div class="carousel-indicators">
+            <button type="button" data-bs-target="#testimonialCarousel" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+            <button type="button" data-bs-target="#testimonialCarousel" data-bs-slide-to="1" aria-label="Slide 2"></button>
+            <button type="button" data-bs-target="#testimonialCarousel" data-bs-slide-to="2" aria-label="Slide 3"></button>
+            <button type="button" data-bs-target="#testimonialCarousel" data-bs-slide-to="3" aria-label="Slide 4"></button>
+            <button type="button" data-bs-target="#testimonialCarousel" data-bs-slide-to="4" aria-label="Slide 5"></button>
+          </div>
+
+          <div class="carousel-inner">
+            <!-- Each item contains a row of 1/2/3 cards (mobile/tablet/desktop) -->
+            <!-- ============ SLIDE 1 ============ -->
+            <div class="carousel-item active">
+              <div class="row g-3 g-md-4">
+                <!-- Review 1 -->
+                <div class="col-12 col-md-6 col-lg-4">
+                  <article class="card h-100 shadow-sm border-0 glass-sm testimonial-card">
+                    <div class="card-body">
+                      <div class="d-flex align-items-center mb-2">
+                        <div class="avatar-circle me-2 bg-gold">PS</div>
+                        <div>
+                          <div class="fw-bold text-navy">Priya Sharma</div>
+                          <small class="text-muted">Mumbai · 2 weeks ago</small>
+                        </div>
+                      </div>
+                      <div class="stars mb-2" aria-label="5 stars">★★★★★</div>
+                      <p class="mb-2">“Absolutely stunning birthday setup! The colors and balloon styling were even better than we imagined. The team was punctual and super polite.”</p>
+                      <small class="text-muted">Service: Birthday theme décor</small>
+                    </div>
+                  </article>
+                </div>
+                <!-- Review 2 -->
+                <div class="col-12 col-md-6 col-lg-4">
+                  <article class="card h-100 shadow-sm border-0 glass-sm testimonial-card">
+                    <div class="card-body">
+                      <div class="d-flex align-items-center mb-2">
+                        <div class="avatar-circle me-2 bg-navy">RR</div>
+                        <div>
+                          <div class="fw-bold text-navy">Ritika & Rahul</div>
+                          <small class="text-muted">Thane · 1 month ago</small>
+                        </div>
+                      </div>
+                      <div class="stars mb-2">★★★★★</div>
+                      <p class="mb-2">“Pastel baby shower décor was picture‑perfect. Elegant backdrop and photo spot. Zero stress—handled end‑to‑end.”</p>
+                      <small class="text-muted">Service: Baby shower décor</small>
+                    </div>
+                  </article>
+                </div>
+                <!-- Review 3 -->
+                <div class="col-12 col-md-6 col-lg-4">
+                  <article class="card h-100 shadow-sm border-0 glass-sm testimonial-card">
+                    <div class="card-body">
+                      <div class="d-flex align-items-center mb-2">
+                        <div class="avatar-circle me-2 bg-gold">MA</div>
+                        <div>
+                          <div class="fw-bold text-navy">Megha & Abhishek</div>
+                          <small class="text-muted">Pune · 3 weeks ago</small>
+                        </div>
+                      </div>
+                      <div class="stars mb-2">★★★★★</div>
+                      <p class="mb-2">“Marigold Haldi backdrop with cane props looked straight out of Pinterest. Simple, classy, photogenic.”</p>
+                      <small class="text-muted">Service: Haldi ceremony décor</small>
+                    </div>
+                  </article>
+                </div>
+              </div>
+            </div>
+
+            <!-- ============ SLIDE 2 ============ -->
+            <div class="carousel-item">
+              <div class="row g-3 g-md-4">
+                <div class="col-12 col-md-6 col-lg-4">
+                  <article class="card h-100 shadow-sm border-0 glass-sm testimonial-card">
+                    <div class="card-body">
+                      <div class="d-flex align-items-center mb-2">
+                        <div class="avatar-circle me-2 bg-navy">VT</div>
+                        <div>
+                          <div class="fw-bold text-navy">Vivek & Tanvi</div>
+                          <small class="text-muted">Navi Mumbai · 10 days ago</small>
+                        </div>
+                      </div>
+                      <div class="stars mb-2">★★★★★</div>
+                      <p class="mb-2">“Our son’s jungle theme was a hit! Kids loved the animal props and entrance arch. Clean setup and tidy wrap‑up.”</p>
+                      <small class="text-muted">Service: Kids birthday décor</small>
+                    </div>
+                  </article>
+                </div>
+                <div class="col-12 col-md-6 col-lg-4">
+                  <article class="card h-100 shadow-sm border-0 glass-sm testimonial-card">
+                    <div class="card-body">
+                      <div class="d-flex align-items-center mb-2">
+                        <div class="avatar-circle me-2 bg-gold">HF</div>
+                        <div>
+                          <div class="fw-bold text-navy">Harsha Family</div>
+                          <small class="text-muted">Mumbai · 3 weeks ago</small>
+                        </div>
+                      </div>
+                      <div class="stars mb-2">★★★★★</div>
+                      <p class="mb-2">“Warm, premium décor for our newborn’s home welcome. Soft lights, name board, neutral palette—exactly our vibe.”</p>
+                      <small class="text-muted">Service: Newborn welcome/home décor</small>
+                    </div>
+                  </article>
+                </div>
+                <div class="col-12 col-md-6 col-lg-4">
+                  <article class="card h-100 shadow-sm border-0 glass-sm testimonial-card">
+                    <div class="card-body">
+                      <div class="d-flex align-items-center mb-2">
+                        <div class="avatar-circle me-2 bg-navy">SA</div>
+                        <div>
+                          <div class="fw-bold text-navy">Sumit & Aditi</div>
+                          <small class="text-muted">Mumbai · 1 month ago</small>
+                        </div>
+                      </div>
+                      <div class="stars mb-2">★★★★★</div>
+                      <p class="mb-2">“Floral arch and candle aisle felt dreamy. Minimal yet luxurious. Coordination was flawless.”</p>
+                      <small class="text-muted">Service: Engagement décor</small>
+                    </div>
+                  </article>
+                </div>
+              </div>
+            </div>
+
+            <!-- ============ SLIDE 3 ============ -->
+            <div class="carousel-item">
+              <div class="row g-3 g-md-4">
+                <div class="col-12 col-md-6 col-lg-4">
+                  <article class="card h-100 shadow-sm border-0 glass-sm testimonial-card">
+                    <div class="card-body">
+                      <div class="d-flex align-items-center mb-2">
+                        <div class="avatar-circle me-2 bg-gold">NT</div>
+                        <div>
+                          <div class="fw-bold text-navy">NextGen Technologies</div>
+                          <small class="text-muted">BKC · 2 months ago</small>
+                        </div>
+                      </div>
+                      <div class="stars mb-2" aria-label="4 stars">★★★★☆</div>
+                      <p class="mb-2">“Professional team and clean brand execution. One standee came late but got fixed quickly.”</p>
+                      <small class="text-muted">Service: Corporate event branding & décor</small>
+                    </div>
+                  </article>
+                </div>
+                <div class="col-12 col-md-6 col-lg-4">
+                  <article class="card h-100 shadow-sm border-0 glass-sm testimonial-card">
+                    <div class="card-body">
+                      <div class="d-flex align-items-center mb-2">
+                        <div class="avatar-circle me-2 bg-navy">AJ</div>
+                        <div>
+                          <div class="fw-bold text-navy">Aayushi Jain</div>
+                          <small class="text-muted">Andheri · 2 weeks ago</small>
+                        </div>
+                      </div>
+                      <div class="stars mb-2">★★★★★</div>
+                      <p class="mb-2">“Vibrant mehendi setup with boho elements. Loved the seating corner and tassel backdrops.”</p>
+                      <small class="text-muted">Service: Mehendi décor</small>
+                    </div>
+                  </article>
+                </div>
+                <div class="col-12 col-md-6 col-lg-4">
+                  <article class="card h-100 shadow-sm border-0 glass-sm testimonial-card">
+                    <div class="card-body">
+                      <div class="d-flex align-items-center mb-2">
+                        <div class="avatar-circle me-2 bg-gold">KM</div>
+                        <div>
+                          <div class="fw-bold text-navy">Kunal Mehta</div>
+                          <small class="text-muted">Powai · 5 days ago</small>
+                        </div>
+                      </div>
+                      <div class="stars mb-2">★★★★★</div>
+                      <p class="mb-2">“Intimate terrace décor with fairy lights and fresh flowers. Budget‑friendly yet premium.”</p>
+                      <small class="text-muted">Service: Anniversary surprise décor</small>
+                    </div>
+                  </article>
+                </div>
+              </div>
+            </div>
+
+            <!-- ============ SLIDE 4 ============ -->
+            <div class="carousel-item">
+              <div class="row g-3 g-md-4">
+                <div class="col-12 col-md-6 col-lg-4">
+                  <article class="card h-100 shadow-sm border-0 glass-sm testimonial-card">
+                    <div class="card-body">
+                      <div class="d-flex align-items-center mb-2">
+                        <div class="avatar-circle me-2 bg-navy">SI</div>
+                        <div>
+                          <div class="fw-bold text-navy">Sana & Imran</div>
+                          <small class="text-muted">Bandra · 3 weeks ago</small>
+                        </div>
+                      </div>
+                      <div class="stars mb-2">★★★★★</div>
+                      <p class="mb-2">“Elegant white‑and‑green palette, beautiful signage, and delicate florals. Perfectly timed with venue.”</p>
+                      <small class="text-muted">Service: Nikkah décor</small>
+                    </div>
+                  </article>
+                </div>
+                <!-- You can duplicate two more cards here or keep slide light for variety -->
+                <div class="col-12 col-md-6 col-lg-4">
+                  <article class="card h-100 shadow-sm border-0 glass-sm testimonial-card">
+                    <div class="card-body d-flex align-items-center justify-content-center text-muted">
+                      <small>More reviews loading…</small>
+                    </div>
+                  </article>
+                </div>
+                <div class="col-12 col-md-6 col-lg-4">
+                  <article class="card h-100 shadow-sm border-0 glass-sm testimonial-card">
+                    <div class="card-body d-flex align-items-center justify-content-center text-muted">
+                      <small>Follow us @decorstudio</small>
+                    </div>
+                  </article>
+                </div>
+              </div>
+            </div>
+
+            <!-- ============ SLIDE 5 (optional filler / future) ============ -->
+            <div class="carousel-item">
+              <div class="row g-3 g-md-4">
+                <div class="col-12 col-md-6 col-lg-4">
+                  <article class="card h-100 shadow-sm border-0 glass-sm testimonial-card">
+                    <div class="card-body d-flex align-items-center justify-content-center text-muted">
+                      <small>Add more client love here ♥</small>
+                    </div>
+                  </article>
+                </div>
+                <div class="col-12 col-md-6 col-lg-4">
+                  <article class="card h-100 shadow-sm border-0 glass-sm testimonial-card">
+                    <div class="card-body d-flex align-items-center justify-content-center text-muted">
+                      <small>We value your feedback</small>
+                    </div>
+                  </article>
+                </div>
+                <div class="col-12 col-md-6 col-lg-4">
+                  <article class="card h-100 shadow-sm border-0 glass-sm testimonial-card">
+                    <div class="card-body d-flex align-items-center justify-content-center text-muted">
+                      <small>Contact us for a custom quote</small>
+                    </div>
+                  </article>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Controls -->
+          <button class="carousel-control-prev" type="button" data-bs-target="#testimonialCarousel" data-bs-slide="prev" aria-label="Previous">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+          </button>
+          <button class="carousel-control-next" type="button" data-bs-target="#testimonialCarousel" data-bs-slide="next" aria-label="Next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+          </button>
         </div>
       </div>
     </section>
@@ -270,7 +582,7 @@
         <span class="blob b3"></span>
       </div>
 
-      <div class="container">
+      <div class="container position-relative">
         <header class="text-center mb-5 reveal">
           <h2 class="display-6 fw-bold text-navy">Let’s Plan Your Perfect Event</h2>
           <p class="lead text-muted mb-0">Tell us about your occasion—theme, date, venue—and we’ll craft a beautiful experience.</p>
@@ -283,8 +595,10 @@
             <div class="col-12 col-lg-6 p-4 p-md-5 border-end-lg">
               <h3 class="h4 fw-bold mb-4 text-navy d-flex align-items-center gap-2"><i class="bi bi-envelope-paper-heart text-gold"></i> Send us a message</h3>
 
-              <form id="contactForm" novalidate>
+              <form id="contactForm" action="https://api.web3forms.com/submit" method="POST" autocomplete="on" novalidate>
                 <div class="mb-3">
+                  <input type="hidden" name="access_key" value="2ae03305-83a8-48b9-9071-fd24bc057a6a" />
+
                   <label class="form-label" for="name">Name</label>
                   <input class="form-control form-glass" id="name" name="name" type="text" placeholder="Your full name" required />
                   <div class="invalid-feedback">Please enter your name.</div>
@@ -310,7 +624,6 @@
                       <option>Newborn Welcome</option>
                       <option>Baby Shower</option>
                       <option>Haldi Ceremony</option>
-
                       <option>Other</option>
                     </select>
                     <div class="invalid-feedback">Please select an event type.</div>
@@ -364,6 +677,23 @@
 
     <!-- Bootstrap Bundle JS (with Popper) -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+
+    <!-- Backdrop sync for mobile collapse -->
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        const collapse = document.getElementById("navContent");
+        const backdrop = document.querySelector(".nav-backdrop");
+        if (collapse && backdrop) {
+          collapse.addEventListener("show.bs.collapse", () => backdrop.classList.add("show"));
+          collapse.addEventListener("hide.bs.collapse", () => backdrop.classList.remove("show"));
+          // Close when clicking backdrop
+          backdrop.addEventListener("click", () => {
+            const c = bootstrap.Collapse.getOrCreateInstance(collapse);
+            c.hide();
+          });
+        }
+      });
+    </script>
 
     <!-- Your JS -->
     <script src="index.js"></script>

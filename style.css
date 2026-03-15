@@ -1,3 +1,6 @@
+/* =========================================
+   ROOT + GLOBAL
+========================================= */
 :root {
   --navy: #0b1f3a;
   --gold: #c5a572;
@@ -5,10 +8,8 @@
   --glass-dark: rgba(255, 255, 255, 0.35);
   --blur: 14px;
 }
-body {
-  cursor: none;
-}
-/* Hide default system cursor (global) */
+
+/* Hide default cursor globally (you use a custom cursor) */
 html,
 body,
 a,
@@ -22,88 +23,57 @@ textarea {
   cursor: none !important;
 }
 
-/* Cursor container (holds ring + dot) */
+/* Page fade-in */
+@keyframes pageIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+body.page-fade-in {
+  animation: pageIn 0.45s ease both;
+}
+
+/* =========================================
+   CUSTOM CURSOR (SINGLE STYLE TO MATCH HTML)
+   (Your HTML doesn't render #cursor .ring/.dot)
+========================================= */
 #cursor {
   position: fixed;
   left: 0;
   top: 0;
-  width: 32px;
-  height: 32px; /* ring size */
-  pointer-events: none;
-  z-index: 99999;
-  transform: translate(-50%, -50%);
-  mix-blend-mode: difference; /* looks great on mixed backgrounds */
-}
-
-/* Outer ring */
-#cursor .ring {
-  position: absolute;
-  inset: 0;
+  width: 18px;
+  height: 18px;
   border: 2px solid var(--gold);
   border-radius: 50%;
-  box-sizing: border-box;
-  transition:
-    transform 0.18s ease,
-    border-color 0.2s ease,
-    opacity 0.2s ease;
-  opacity: 0.95;
-}
-
-/* Center dot */
-#cursor .dot {
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  width: 6px;
-  height: 6px;
+  pointer-events: none;
+  z-index: 5000;
+  mix-blend-mode: difference;
   transform: translate(-50%, -50%);
-  background: var(--gold);
-  border-radius: 50%;
   transition:
-    transform 0.12s ease,
-    background-color 0.2s ease,
-    opacity 0.2s ease;
-  opacity: 0.95;
+    width 0.15s ease,
+    height 0.15s ease,
+    border-color 0.15s ease;
 }
-
-/* Hover over interactive targets → grow ring, dot */
-.cursor-hover .ring {
-  transform: scale(1.5);
-  border-color: #ffdca0;
-}
-.cursor-hover .dot {
-  transform: translate(-50%, -50%) scale(1.2);
-  background-color: #ffdca0;
-}
-
-/* Optional: click feedback (pulse) */
-.cursor-click .ring {
-  animation: cursorPulse 0.35s ease-out 1;
-}
-@keyframes cursorPulse {
-  0% {
-    transform: scale(1.5);
-    opacity: 1;
-  }
-  100% {
-    transform: scale(2.1);
-    opacity: 0;
-  }
-}
-
-/* Respect reduced motion & hide on touch */
-@media (prefers-reduced-motion: reduce) {
-  #cursor .ring,
-  #cursor .dot {
-    transition: none !important;
-  }
-}
+/* Hide custom cursor on touch */
 @media (pointer: coarse) {
   #cursor {
     display: none;
-  } /* no custom cursor on touch */
+  }
 }
-/* Hero parallax baseline */
+
+/* Respect reduced motion for cursor transitions if needed */
+@media (prefers-reduced-motion: reduce) {
+  #cursor {
+    transition: none !important;
+  }
+}
+
+/* =========================================
+   HERO / PARALLAX / SCROLL PROGRESS
+========================================= */
 #home {
   position: relative;
   overflow: hidden;
@@ -113,7 +83,6 @@ textarea {
   transition: background-position 0.2s ease-out;
 }
 
-/* Scroll progress */
 .scroll-progress {
   position: fixed;
   left: 0;
@@ -125,8 +94,9 @@ textarea {
   transition: width 0.08s linear;
 }
 
-/* Navbar */
-
+/* =========================================
+   NAVBAR + BRAND + LINKS
+========================================= */
 .navbar-creative {
   --nav-h: 64px;
   height: var(--nav-h);
@@ -268,7 +238,7 @@ textarea {
   }
 }
 
-/* Mobile menu */
+/* Mobile menu (use with navbar-expand-lg + collapse) */
 @media (max-width: 991.98px) {
   .navbar-creative .navbar-collapse {
     position: fixed;
@@ -297,9 +267,14 @@ textarea {
     background: rgba(0, 0, 0, 0.35);
     opacity: 0;
     visibility: hidden;
-    transition: opacity 0.28s ease;
+    transition:
+      opacity 0.28s ease,
+      visibility 0.28s ease;
+    z-index: 1040; /* just below navbar */
   }
-  .navbar-creative .navbar-collapse.show ~ .nav-backdrop {
+  /* Backdrop visible either via sibling rule or .show (JS toggles .show) */
+  .navbar-creative .navbar-collapse.show ~ .nav-backdrop,
+  .nav-backdrop.show {
     opacity: 1;
     visibility: visible;
   }
@@ -335,7 +310,7 @@ textarea {
   }
 }
 
-/* Toggler */
+/* Toggler (animated icon) */
 .navbar-toggler {
   border: none;
   position: relative;
@@ -371,7 +346,7 @@ textarea {
   transform: translateY(-6px) rotate(-45deg);
 }
 
-/* Reduce motion */
+/* Reduced motion (global) */
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
@@ -381,10 +356,9 @@ textarea {
   }
 }
 
-/* -------------------------------- */
-/*      CAROUSEL SECTION            */
-/* -------------------------------- */
-
+/* =========================================
+   PORTFOLIO (interactive options)
+========================================= */
 .carousel-root {
   display: flex;
   justify-content: center;
@@ -393,14 +367,6 @@ textarea {
   height: 100vh;
   font-family: "Roboto", sans-serif;
   transition: 0.25s;
-}
-
-/* Credit (for external photos if needed) */
-.credit {
-  position: absolute;
-  bottom: 20px;
-  left: 20px;
-  color: inherit;
 }
 
 /* Options container (base) */
@@ -423,12 +389,11 @@ textarea {
   background-size: auto 120%;
   background-position: center;
   cursor: pointer;
-  transition: 0.5s cubic-bezier(0.05, 0.61, 0.41, 0.95);
   opacity: 0.85;
   transform: translateZ(0);
   will-change: transform, opacity;
   transition:
-    opacity 0.35s ease,
+    opacity 0.35s cubic-bezier(0.16, 0.73, 0.58, 1),
     transform 0.35s cubic-bezier(0.16, 0.73, 0.58, 1);
 }
 .options .option:hover {
@@ -436,7 +401,7 @@ textarea {
   opacity: 1;
 }
 
-/* Default background colors */
+/* Default background colors (fallbacks) */
 .options .option:nth-child(1) {
   --defaultBackground: #ed5565;
 }
@@ -460,7 +425,7 @@ textarea {
 .options .option.active {
   flex-grow: 10000;
   transform: scale(1);
-  max-width: 600px;
+  max-width: 1200px;
   border-radius: 40px;
   background-size: auto 100%;
   opacity: 1;
@@ -526,7 +491,7 @@ textarea {
   min-width: 40px;
   height: 40px;
   border-radius: 100%;
-  background: white;
+  background: #fff;
   color: var(--defaultBackground);
   transition:
     transform 0.25s ease,
@@ -541,7 +506,7 @@ textarea {
   flex-direction: column;
   justify-content: center;
   margin-left: 10px;
-  color: white;
+  color: #fff;
   white-space: pre;
 }
 .options .option .label .info > div {
@@ -555,8 +520,8 @@ textarea {
   font-size: clamp(1rem, 2.8vw, 1.4rem);
 }
 .options .option .label .info .sub {
-  transition-delay: 0.1s;
   font-size: clamp(0.8rem, 2.2vw, 1rem);
+  transition-delay: 0.1s;
 }
 
 /* Mobile-first: horizontal scroll-snap carousel */
@@ -582,7 +547,9 @@ textarea {
   }
 }
 
-/* Divider */
+/* =========================================
+   DIVIDER / FLOATING / REVEAL
+========================================= */
 .section-divider {
   height: 3px;
   width: 80px;
@@ -601,8 +568,6 @@ textarea {
     opacity: 0.4;
   }
 }
-
-/* Floating hero blob */
 .floating {
   animation: floatingAnim 6s ease-in-out infinite;
 }
@@ -617,8 +582,6 @@ textarea {
     transform: translateY(0);
   }
 }
-
-/* Reveal on scroll */
 .reveal {
   opacity: 0;
   transform: translateY(40px);
@@ -720,6 +683,29 @@ textarea {
   letter-spacing: 0.4px;
   text-transform: uppercase;
 }
+/* Pause marquee when hovered (UX) */
+.marquee:hover .track {
+  animation-play-state: paused;
+}
+
+/* Hover state for custom cursor (used by JS) */
+#cursor.cursor--hover {
+  width: 28px;
+  height: 28px;
+  border-color: #ffdca0;
+}
+
+/* Optional: hide cursor when leaving window (used by JS) */
+#cursor.cursor--hide {
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+/* Tilt cards: smooth back to neutral */
+.tilt {
+  transition: transform 0.15s ease-out;
+  will-change: transform;
+}
 @keyframes marquee {
   to {
     transform: translateX(-50%);
@@ -739,53 +725,17 @@ textarea {
     0 0 24px rgba(197, 165, 114, 0.5);
 }
 
-/* === Page Fade-In === */
-@keyframes pageIn {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
-}
-body.page-fade-in {
-  animation: pageIn 0.45s ease both;
-}
-
-/* === Custom Magnetic Cursor === */
-#cursor {
-  position: fixed;
-  left: 0;
-  top: 0;
-  width: 18px;
-  height: 18px;
-  border: 2px solid var(--gold);
-  border-radius: 50%;
-  pointer-events: none;
-  z-index: 5000;
-  mix-blend-mode: difference;
-  transform: translate(-50%, -50%);
-  transition:
-    width 0.15s ease,
-    height 0.15s ease,
-    border-color 0.15s ease;
-}
-@media (pointer: coarse) {
-  #cursor {
-    display: none;
-  }
-} /* hide on touch */
-/* =========================
+/* =========================================
    CONTACT • Glass-morphism
-   ========================= */
-
-/* Utility */
+========================================= */
 .text-navy {
   color: var(--navy);
 }
 .text-gold {
   color: var(--gold);
 }
+
+/* Only show border on lg+ (HTML uses .border-end-lg) */
 .border-end-lg {
   border-right: 1px solid rgba(255, 255, 255, 0.12);
 }
@@ -795,13 +745,12 @@ body.page-fade-in {
   }
 }
 
-/* Section shell */
 .contact-section {
   overflow: hidden;
   position: relative;
 }
 
-/* Background blobs (scoped to contact) */
+/* Background blobs (scoped) */
 .contact-section .contact-bg {
   position: absolute;
   inset: 0;
@@ -907,7 +856,7 @@ body.page-fade-in {
   background: rgba(255, 255, 255, 0.75);
 }
 
-/* Ripple on CTA */
+/* Ripple (single definition) */
 .ripple {
   position: relative;
   overflow: hidden;
@@ -963,7 +912,7 @@ body.page-fade-in {
   will-change: transform;
 }
 
-/* Respect reduced motion */
+/* Respect reduced motion (scoped) */
 @media (prefers-reduced-motion: reduce) {
   .tilt,
   .ripple::after,
@@ -973,16 +922,14 @@ body.page-fade-in {
     animation: none !important;
   }
 }
-/* ============== Occasion Form styles ============== */
 
-/* Floating label container */
+/* ============== Occasion Form styles ============== */
 .field {
   position: relative;
 }
 .field .fl {
-  /* keep your glass input base */
-  padding-top: 1.15rem; /* space for floating label without changing layout height */
-}
+  padding-top: 1.15rem;
+} /* Floating space */
 .field label {
   position: absolute;
   left: 12px;
@@ -998,16 +945,14 @@ body.page-fade-in {
     opacity 0.2s ease;
   background: transparent;
 }
-
-/* When focused or has value → float label */
+/* Float label when focused or has value */
 .field .fl:focus + label,
 .field .fl:not(:placeholder-shown) + label {
   top: 6px;
   transform: translateY(-0.55rem) scale(0.88);
   color: var(--navy);
 }
-
-/* Animated gold underline */
+/* Gold underline */
 .field .underline {
   position: absolute;
   left: 12px;
@@ -1024,7 +969,7 @@ body.page-fade-in {
   transform: scaleX(1);
 }
 
-/* Important field accent (time) */
+/* Important field accent */
 .field.important .fl {
   box-shadow: inset 0 0 0 1px rgba(197, 165, 114, 0.45);
 }
@@ -1032,7 +977,7 @@ body.page-fade-in {
   box-shadow: 0 0 0 4px rgba(197, 165, 114, 0.25);
 }
 
-/* Invalid shake animation */
+/* Invalid shake */
 @keyframes shakeX {
   0%,
   100% {
@@ -1057,36 +1002,15 @@ body.page-fade-in {
 
 /* Success glow */
 .field.valid-glow .fl {
-  box-shadow: 0 0 0 3px rgba(46, 204, 113, 0.25); /* greenish glow */
+  box-shadow: 0 0 0 3px rgba(46, 204, 113, 0.25);
 }
 
-/* Submit ripple origin (optional enhancement) */
-.ripple {
-  position: relative;
-  overflow: hidden;
-}
-.ripple::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  transform: scale(0);
-  background: radial-gradient(circle, rgba(255, 220, 160, 0.45) 10%, transparent 60%);
-  opacity: 0;
-  transition:
-    transform 0.5s ease,
-    opacity 0.6s ease;
-}
-.ripple.is-rippling::after {
-  transform: scale(4);
-  opacity: 1;
-}
-
-/* Glass card look fits your system */
+/* Form card rounding (optional utility) */
 .form-card.glass {
   border-radius: 22px;
 }
 
-/* Small toast aligned below button row (reuses your toast-glass style) */
+/* Small toast aligned under button row */
 #formToast {
   position: relative;
   left: auto;
@@ -1096,4 +1020,182 @@ body.page-fade-in {
 }
 #formToast.show {
   opacity: 1;
+}
+
+/* Remove browser/Bootstrap default valid check visuals */
+input:valid,
+select:valid,
+textarea:valid {
+  background-image: none !important;
+}
+.was-validated input.form-control:valid,
+.was-validated select.form-select:valid,
+.was-validated textarea.form-control:valid {
+  background-image: none !important;
+  box-shadow: none !important;
+}
+
+/* Prevent pattern repeat on form-glass fields */
+.form-glass {
+  background-image: none !important;
+  background-repeat: no-repeat !important;
+}
+/* Testimonial avatars */
+.avatar-circle {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  color: #fff;
+}
+.bg-gold {
+  background: var(--gold);
+}
+.bg-navy {
+  background: var(--navy);
+}
+
+/* Stars in gold (uses plain text stars for simplicity) */
+.stars {
+  color: #f5c046;
+  letter-spacing: 1px;
+  font-size: 1.05rem;
+}
+
+/* Prevent bounce when changing slides */
+.testimonial-card {
+  transition:
+    transform 0.25s ease,
+    box-shadow 0.25s ease;
+}
+.testimonial-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 16px 32px -20px rgba(11, 31, 58, 0.35);
+}
+
+/* Better indicator visibility on glass */
+#testimonialCarousel .carousel-indicators [data-bs-target] {
+  background-color: var(--navy);
+  opacity: 0.25;
+}
+#testimonialCarousel .carousel-indicators .active {
+  opacity: 0.85;
+  background: linear-gradient(90deg, var(--gold), #ffdca0);
+}
+
+/* Controls contrast on light background */
+#testimonialCarousel .carousel-control-prev-icon,
+#testimonialCarousel .carousel-control-next-icon {
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+}
+/* ===============================
+   SERVICES • Slide / Card FX
+   =============================== */
+
+/* Hybrid slide/fade between .carousel-item */
+#servicesCarousel .carousel-item {
+  transition:
+    transform 0.55s cubic-bezier(0.22, 1, 0.36, 1),
+    opacity 0.55s ease;
+}
+
+/* Optional: use cross-fade feel */
+#servicesCarousel.carousel-fx .carousel-item {
+  opacity: 0;
+}
+#servicesCarousel.carousel-fx .carousel-item.active,
+#servicesCarousel.carousel-fx .carousel-item.carousel-item-start,
+#servicesCarousel.carousel-fx .carousel-item.carousel-item-end {
+  opacity: 1;
+}
+
+/* --- Card entrance base state --- */
+#servicesCarousel .carousel-item .card {
+  opacity: 0;
+  transform: translateY(22px) scale(0.985) perspective(800px) translateZ(0);
+  filter: blur(2px);
+}
+
+/* When the slide becomes active, animate cards in with a stagger */
+#servicesCarousel .carousel-item.active .card {
+  animation: cardIn 560ms cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+/* Stagger timings for 3 cards per slide */
+#servicesCarousel .carousel-item.active .card:nth-child(1) {
+  animation-delay: 60ms;
+}
+#servicesCarousel .carousel-item.active .card:nth-child(2) {
+  animation-delay: 140ms;
+}
+#servicesCarousel .carousel-item.active .card:nth-child(3) {
+  animation-delay: 220ms;
+}
+
+/* If your slide “borrows” extra cards via JS, stagger them too */
+#servicesCarousel .carousel-item.active .card:nth-child(4) {
+  animation-delay: 300ms;
+}
+#servicesCarousel .carousel-item.active .card:nth-child(5) {
+  animation-delay: 380ms;
+}
+
+@keyframes cardIn {
+  0% {
+    opacity: 0;
+    transform: translateY(22px) scale(0.985) perspective(800px) translateZ(0);
+    filter: blur(2px);
+  }
+  60% {
+    opacity: 1;
+    transform: translateY(-4px) scale(1) perspective(800px) translateZ(12px);
+    filter: blur(0);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1) perspective(800px) translateZ(0);
+    filter: blur(0);
+  }
+}
+
+/* --- Optional: outgoing cards animate subtly out --- */
+#servicesCarousel .carousel-item.anim-out .card {
+  animation: cardOut 360ms ease forwards;
+}
+@keyframes cardOut {
+  to {
+    opacity: 0;
+    transform: translateY(10px) scale(0.985);
+    filter: blur(1px);
+  }
+}
+
+/* --- Optional: a gentle tilt on hover to keep it classy --- */
+#servicesCarousel .card {
+  transition:
+    transform 200ms ease,
+    box-shadow 220ms ease,
+    filter 220ms ease;
+  will-change: transform;
+}
+#servicesCarousel .card:hover {
+  transform: translateY(-4px) rotateX(1deg);
+  box-shadow: 0 16px 34px -24px rgba(11, 31, 58, 0.35);
+}
+
+/* Services carousel indicators to match theme */
+#servicesCarousel .carousel-indicators [data-bs-target] {
+  background-color: var(--navy);
+  opacity: 0.25;
+}
+#servicesCarousel .carousel-indicators .active {
+  opacity: 0.85;
+  background: linear-gradient(90deg, var(--gold), #ffdca0);
+}
+#servicesCarousel .carousel-control-prev-icon,
+#servicesCarousel .carousel-control-next-icon {
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
 }

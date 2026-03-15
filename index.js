@@ -405,89 +405,152 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 })();
 
-// Form validation + faux submit + toast
-(() => {
-  const form = document.getElementById("contactForm");
-  const toast = document.getElementById("contactToast");
-  if (!form || !toast) return;
+// const form = document.getElementById('form');
+// const submitBtn = form.querySelector('button[type="submit"]');
 
-  form.addEventListener("submit", (e) => {
-    e.preventDefault();
+// form.addEventListener('submit', async (e) => {
+//     e.preventDefault();
 
-    if (!form.checkValidity()) {
-      e.stopPropagation();
-      form.classList.add("was-validated");
-      return;
-    }
+//     const formData = new FormData(form);
+//     formData.append("access_key", "2ae03305-83a8-48b9-9071-fd24bc057a6a");
 
-    // simulate async send
-    const btn = form.querySelector('button[type="submit"]');
-    const prev = btn.innerHTML;
-    btn.disabled = true;
-    btn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Sending…';
+//     const originalText = submitBtn.textContent;
 
-    setTimeout(() => {
-      btn.disabled = false;
-      btn.innerHTML = prev;
+//     submitBtn.textContent = "Sending...";
+//     submitBtn.disabled = true;
+
+//     try {
+//         const response = await fetch("https://api.web3forms.com/submit", {
+//             method: "POST",
+//             body: formData
+//         });
+
+//         const data = await response.json();
+
+//         if (response.ok) {
+//             alert("Success! Your message has been sent.");
+//             form.reset();
+//         } else {
+//             alert("Error: " + data.message);
+//         }
+
+//     } catch (error) {
+//         alert("Something went wrong. Please try again.");
+//     } finally {
+//         submitBtn.textContent = originalText;
+//         submitBtn.disabled = false;
+//     }
+// });
+const form = document.getElementById("form");
+const submitBtn = form.querySelector('button[type="submit"]');
+
+form.addEventListener("submit", async (e) => {
+  e.preventDefault();
+
+  const formData = new FormData(form);
+  formData.append("access_key", "2ae03305-83a8-48b9-9071-fd24bc057a6a");
+
+  const originalText = submitBtn.textContent;
+
+  submitBtn.textContent = "Sending...";
+  submitBtn.disabled = true;
+
+  try {
+    const response = await fetch("https://api.web3forms.com/submit", { method: "POST", body: formData });
+
+    const data = await response.json();
+
+    if (response.ok) {
+      alert("Success! Your message has been sent.");
       form.reset();
-      form.classList.remove("was-validated");
-
-      // show toast
-      toast.classList.add("show");
-      setTimeout(() => toast.classList.remove("show"), 2200);
-    }, 1200);
-  });
-})();
-// === reCAPTCHA v3 on form submit ===
-(() => {
-  const form = document.getElementById("contactForm");
-  if (!form || !window.grecaptcha) return;
-
-  form.addEventListener("submit", async (e) => {
-    e.preventDefault();
-
-    // Built-in validation first
-    if (!form.checkValidity()) {
-      e.stopPropagation();
-      form.classList.add("was-validated");
-      return;
+    } else {
+      alert("Error: " + data.message);
     }
+  } catch (error) {
+    alert("Something went wrong. Please try again.");
+  } finally {
+    submitBtn.textContent = originalText;
+    submitBtn.disabled = false;
+  }
+});
 
-    try {
-      const token = await grecaptcha.execute("YOUR_SITE_KEY_V3", { action: "contact" });
-      // Put token into hidden field
-      document.getElementById("recaptchaToken").value = token;
+// ===== Services carousel animations + seamless multi-card fill =====
+// document.addEventListener("DOMContentLoaded", () => {
+//   const sc = document.getElementById("servicesCarousel");
+//   if (!sc || typeof bootstrap === "undefined" || !bootstrap.Carousel) return;
 
-      // Now submit to your backend (replace the simulated setTimeout with a real fetch)
-      // Example POST (uncomment when backend ready):
-      /*
-      const res = await fetch('/api/contact', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(Object.fromEntries(new FormData(form)))
-      });
-      const data = await res.json();
-      if (!data.success) throw new Error('reCAPTCHA failed or server error');
-      */
+//   // Start carousel
+//   new bootstrap.Carousel(sc, { interval: 3500, ride: "carousel", wrap: true, pause: "hover", touch: true, keyboard: true });
 
-      // (Keep your current simulated success UX while backend isn’t wired)
-      const btn = form.querySelector('button[type="submit"]');
-      const prev = btn.innerHTML;
-      btn.disabled = true;
-      btn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Sending…';
+//   // Ensure each slide visually has 3 columns (on desktop) by cloning
+//   ensureMultiCardSeamless(sc, 3, ".col-12");
 
-      setTimeout(() => {
-        btn.disabled = false;
-        btn.innerHTML = prev;
-        form.reset();
-        form.classList.remove("was-validated");
-        const toast = document.getElementById("contactToast");
-        toast.classList.add("show");
-        setTimeout(() => toast.classList.remove("show"), 2200);
-      }, 1200);
-    } catch (err) {
-      console.error(err);
-      alert("reCAPTCHA could not be verified. Please try again.");
-    }
-  });
-})();
+//   // Add outgoing class just before slide change for a nicer transition
+//   sc.addEventListener("slide.bs.carousel", (e) => {
+//     const curr = sc.querySelector(".carousel-item.active");
+//     if (curr) {
+//       curr.classList.add("anim-out"); // triggers cardOut
+//       // Remove after animation to reset
+//       setTimeout(() => curr.classList.remove("anim-out"), 420);
+//     }
+//   });
+
+//   function ensureMultiCardSeamless(container, minCols = 3, colSelector = ".col-12") {
+//     const items = container.querySelectorAll(".carousel-item");
+//     if (!items.length) return;
+
+//     items.forEach((item) => {
+//       const row = item.querySelector(".row");
+//       if (!row) return;
+
+//       let count = row.querySelectorAll(colSelector).length;
+//       let next = item.nextElementSibling || items[0];
+
+//       // Borrow until we have minCols
+//       while (count < minCols) {
+//         const col = next.querySelector(colSelector);
+//         if (col) {
+//           row.appendChild(col.cloneNode(true));
+//           count++;
+//         }
+//         next = next.nextElementSibling || items[0];
+//         if (next === item) break; // safety
+//       }
+//     });
+//   }
+// });
+
+// ===== Services carousel: init + seamless multi-card fill =====
+document.addEventListener("DOMContentLoaded", () => {
+  const sc = document.getElementById("servicesCarousel");
+  if (!sc || typeof bootstrap === "undefined" || !bootstrap.Carousel) return;
+
+  // Start carousel
+  new bootstrap.Carousel(sc, { interval: 3500, ride: "carousel", wrap: true, pause: "hover", touch: true, keyboard: true });
+
+  // Keep each slide visually full at wrap edges
+  ensureMultiCardSeamless(sc, 3, ".col-12");
+
+  function ensureMultiCardSeamless(container, minCols = 3, colSelector = ".col-12") {
+    const items = container.querySelectorAll(".carousel-item");
+    if (!items.length) return;
+
+    items.forEach((item) => {
+      const row = item.querySelector(".row");
+      if (!row) return;
+
+      let count = row.querySelectorAll(colSelector).length;
+      let next = item.nextElementSibling || items[0];
+
+      while (count < minCols) {
+        const col = next.querySelector(colSelector);
+        if (col) {
+          row.appendChild(col.cloneNode(true));
+          count++;
+        }
+        next = next.nextElementSibling || items[0];
+        if (next === item) break; // safety
+      }
+    });
+  }
+});
